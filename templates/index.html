@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tampa Converter</title>
+    <link type="Image/x-icon" href="{{ url_for('static', filename='images/logo.png') }}" rel="icon">
+    <style>
+        :root {
+            --primary: #2D7A7E;
+            --secondary: #a5e6bb;
+            --bg: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Arial Rounded MT Bold', sans-serif;
+            background: linear-gradient(45deg, var(--bg), #ffffff);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        .container-nav {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .navbar {
+            background: rgba(255,255,255,0.9);
+            padding: 15px 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            height: 40px;
+            margin-right: 20px;
+        }
+
+        .nav-links {
+            margin-left: auto;
+        }
+
+        .nav-link {
+            color: var(--primary);
+            text-decoration: none;
+            margin-left: 25px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover {
+            color: #a5e6bb;
+        }
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            margin: 40px 0;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 3.5em;
+            color: var(--primary);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
+        }
+
+        .drop-zone {
+            border: 3px dashed var(--secondary);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(255,255,255,0.9);
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .drop-zone:hover, .drop-zone.dragover {
+            border-color: var(--primary);
+            background: rgba(108,92,231,0.05);
+            transform: scale(1.02);
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .convert-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+
+        .convert-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(108,92,231,0.3);
+        }
+
+        .instructions {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 40px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .supported-files {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .file-type {
+            padding: 15px;
+            border-radius: 10px;
+            background: var(--bg);
+            text-align: center;
+        }
+
+        .bg-circle {
+            position: fixed;
+            border-radius: 50%;
+            background: rgba(52, 150, 77, 0.1);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .circle1 { width: 200px; height: 200px; top: 10%; left: 5%; }
+        .circle2 { width: 150px; height: 150px; top: 70%; right: 10%; }
+        .circle3 { width: 100px; height: 100px; bottom: 20%; left: 20%; }
+    </style>
+</head>
+<body>
+    <div class="bg-circle circle1"></div>
+    <div class="bg-circle circle2"></div>
+    <div class="bg-circle circle3"></div>
+    <div class="container-nav">
+        <nav class="navbar">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="logo">
+            <div class="nav-links">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/myfiles" class="nav-link">My Files</a>
+            </div>
+        </nav>
+    </div>    
+    <div class="container">
+        <header>
+            <h1 class="floating">Tampa Converter</h1>
+            <p>Your smart file transformation tool</p>
+        </header>
+
+        <div class="drop-zone" id="dropZone">
+            <div class="floating">
+                <svg width="60" height="60" viewBox="0 0 24 24" style="fill: var(--primary); margin: 20px;">
+                    <path d="M19 13a1 1 0 0 0-1 1v.38l-1.48-1.48a2.79 2.79 0 0 0-3.93 0l-.7.7-2.48-2.48a2.85 2.85 0 0 0-3.93 0L4 12.6V7a1 1 0 0 1 1-1h7a1 1 0 1 0 0-2H5a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3v-5a1 1 0 0 0-1-1zM5 20a1 1 0 0 1-1-1v-3.57l2.9-2.9a.79.79 0 0 1 1.09 0l3.17 3.17 4.29 4.3zm13-1a1 1 0 0 1-.18.53L13.8 15l.7-.7a.77.77 0 0 1 1.1 0L18 17.22zM8.59 5.76a1 1 0 0 0 1.09-1.69 1 1 0 0 0-1.09 1.69zM20 6a1 1 0 0 0-1-1h-2a1 1 0 0 0 0 2h2a1 1 0 0 0 1-1z"/>
+                </svg>
+                <h2>Drop files here</h2>
+                <p>or click to select files</p>
+            </div>
+            <input type="file" id="fileInput" name="file" accept=".docx,.csv" required>
+            <button class="convert-btn" type="button" onclick="handleConversion()">Convert Now</button>
+        </div>
+
+        <div class="instructions">
+            <h2>How to Convert?</h2>
+            <ol>
+                <li>Drag & drop or click to select your file</li>
+                <li>Choose between DOCX→PDF or CSV→XLSX conversion</li>
+                <li>Wait a few seconds for processing</li>
+                <li>Download your converted file</li>
+            </ol>
+
+            <h3>Supported Formats</h3>
+            <div class="supported-files">
+                <div class="file-type">
+                    <h4>Input Formats</h4>
+                    <p>.docx<br>.csv</p>
+                </div>
+                <div class="file-type">
+                    <h4>Output Formats</h4>
+                    <p>.pdf<br>.xlsx</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Drag & drop functionality
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+
+        // Prevent default drag behaviors
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+            document.body.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        // Highlight drop zone when item is dragged over
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight(e) {
+            dropZone.classList.add('dragover');
+        }
+
+        function unhighlight(e) {
+            dropZone.classList.remove('dragover');
+        }
+
+        // Handle dropped files
+        dropZone.addEventListener('drop', handleDrop, false);
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            fileInput.files = files;
+            handleFiles(files);
+        }
+
+        // Handle file selection
+        fileInput.addEventListener('change', function(e) {
+            handleFiles(this.files);
+        });
+
+        function handleFiles(files) {
+            if(files.length > 0) {
+                const fileName = files[0].name;
+                dropZone.querySelector('h2').textContent = fileName;
+                dropZone.querySelector('p').textContent = 'Ready to convert!';
+            }
+        }
+
+        // Handle conversion
+        function handleConversion() {
+            if(fileInput.files.length === 0) {
+                alert('Please select a file first!');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+            
+            // Add loading animation
+            const btn = document.querySelector('.convert-btn');
+            btn.innerHTML = 'Converting...';
+            btn.disabled = true;
+
+            fetch('/', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if(response.redirected) {
+                    window.location.href = response.url;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Conversion failed!');
+            })
+            .finally(() => {
+                btn.innerHTML = 'Convert Now';
+                btn.disabled = false;
+            });
+        }
+    </script>
+</body>
+</html>

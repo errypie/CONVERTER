@@ -1,0 +1,13 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Загруженные и сгенерированные файлы
+uploads/
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store

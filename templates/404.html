@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tampa Converter</title>
+    <link type="Image/x-icon" href="{{ url_for('static', filename='images/logo.png') }}" rel="icon">
+    <style>
+        :root {
+            --primary: #2D7A7E;
+            --secondary: #a5e6bb;
+            --bg: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Arial Rounded MT Bold', sans-serif;
+            background: linear-gradient(45deg, var(--bg), #ffffff);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        .container-nav {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .navbar {
+            background: rgba(255,255,255,0.9);
+            padding: 15px 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            height: 40px;
+            margin-right: 20px;
+        }
+
+        .nav-links {
+            margin-left: auto;
+        }
+
+        .nav-link {
+            color: var(--primary);
+            text-decoration: none;
+            margin-left: 25px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover {
+            color: #a5e6bb;
+        }
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            margin: 40px 0;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 3.5em;
+            color: var(--primary);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
+        }
+
+        .drop-zone {
+            border: 3px dashed var(--secondary);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(255,255,255,0.9);
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .drop-zone:hover, .drop-zone.dragover {
+            border-color: var(--primary);
+            background: rgba(108,92,231,0.05);
+            transform: scale(1.02);
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .convert-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+
+        .convert-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(108,92,231,0.3);
+        }
+
+
+        .instructions {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 40px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .supported-files {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .file-type {
+            padding: 15px;
+            border-radius: 10px;
+            background: var(--bg);
+            text-align: center;
+        }
+
+        .bg-circle {
+            position: fixed;
+            border-radius: 50%;
+            background: rgba(52, 150, 77, 0.1);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .circle1 { width: 200px; height: 200px; top: 10%; left: 5%; }
+        .circle2 { width: 150px; height: 150px; top: 70%; right: 10%; }
+        .circle3 { width: 100px; height: 100px; bottom: 20%; left: 20%; }
+    </style>
+</head>
+<body>
+    <div class="bg-circle circle1"></div>
+    <div class="bg-circle circle2"></div>
+    <div class="bg-circle circle3"></div>
+    <div class="container-nav">
+        <nav class="navbar">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="logo">
+            <div class="nav-links">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/myfiles" class="nav-link">My Files</a>
+            </div>
+        </nav>
+    </div>    
+    <div class="container">
+        <img width="800px" height="800px" style="margin: auto;" src="{{ url_for('static', filename='images/404.png') }}">
+    </div>
+</body>
+</html>

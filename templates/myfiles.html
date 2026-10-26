@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Files - Tampa Converter</title>
+    <link type="Image/x-icon" href="{{ url_for('static', filename='images/logo.png') }}" rel="icon">
+    <style>
+        :root {
+            --primary: #2D7A7E;
+            --secondary: #a5e6bb;
+            --bg: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Arial Rounded MT Bold', sans-serif;
+            background: linear-gradient(45deg, var(--bg), #ffffff);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .navbar {
+            background: rgba(255,255,255,0.9);
+            padding: 15px 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            height: 40px;
+            margin-right: 20px;
+        }
+
+        .nav-links {
+            margin-left: auto;
+        }
+
+        .nav-link {
+            color: var(--primary);
+            text-decoration: none;
+            margin-left: 25px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover {
+            color: #a5e6bb;
+        }
+
+        .files-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .files-table th,
+        .files-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .files-table th {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .files-table tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        .download-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .download-link:hover {
+            color: #a5e6bb;
+            text-decoration: underline;
+        }
+
+        .no-files {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 15px;
+            color: #666;
+        }
+
+        .bg-circle {
+            position: fixed;
+            border-radius: 50%;
+            background: rgba(52, 150, 77, 0.1);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .circle1 { width: 200px; height: 200px; top: 10%; left: 5%; }
+        .circle2 { width: 150px; height: 150px; top: 70%; right: 10%; }
+        .circle3 { width: 100px; height: 100px; bottom: 20%; left: 20%; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-circle circle1"></div>
+    <div class="bg-circle circle2"></div>
+    <div class="bg-circle circle3"></div>
+
+    <div class="container">
+        <nav class="navbar">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="logo">
+            <div class="nav-links">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/myfiles" class="nav-link">My Files</a>
+            </div>
+        </nav>
+
+        <div class="files-container">
+            {% if files %}
+                <table class="files-table">
+                    <thead>
+                        <tr>
+                            <th>File Name</th>
+                            <th>Type</th>
+                            <th>Size</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for file in files %}
+                        <tr>
+                            <td>{{ file }}</td>
+                            <td>{{ file.split('.')[-1] | upper }}</td>
+                            <td>N/A</td>
+                            <td>
+                                <a href="{{ url_for('download_file', filename=file) }}" class="download-link">
+                                    Download
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div class="instructions">
+                    <p>* Your files will be deleted after 3 days</p>
+                </div>
+            {% else %}
+                <div class="no-files">
+                    <h2>No converted files yet</h2>
+                    <p>Start converting your files on the home page!</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
